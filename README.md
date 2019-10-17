@@ -46,13 +46,15 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 5. Configure Passport
 * ```passport.use``` method with GoogleStrategy
 ```
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK
-},
-function(acessToken, refreshToken, profile, cb) {
-   User.findOne({ googleId: profile.id }, (err, user) => {
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK,
+    },
+    (accessToken, refreshToken, profile, done) => {
+      User.findOne({ googleId: profile.id }, (err, user) => {
         if (err) return done(err);
         if (user) {
           return done(null, user);
@@ -61,17 +63,15 @@ function(acessToken, refreshToken, profile, cb) {
           fullName: profile.displayName,
           email: profile.emails[0].value,
         });
-        newPreference.userId = newUser._id;
-      }
-    });
-    newUser.save()
-    .then(() => done(null, newUser))
-      .catch((error) => {
-        done(error);
+        newUser.save()
+          .then(() => done(null, newUser))
+          .catch((error) => {
+            done(error);
+          });
       });
-    )
-}
-));
+    },
+  ),
+);
 ```
 6. Serialize User  
 * First up is the ```passport.serializeUser``` method that's used to give Passport the nugget of data to put into the session for this authenticated user.

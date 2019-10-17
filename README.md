@@ -1,14 +1,26 @@
-# React Oauth Tutorial
+# React OAuth Tutorial
 
-## Step 1: Get Oauth Keys
+* Clone repo from Github
+
+### How to Test 
+* In the react-oauth-tutorial folder run
+``` npm run dev ``` in terminal
+* Then in a new terminal window run
+``` cd client ``` 
+* once in react-oauth-tutorial/client
+``` npm start ```
+This is run both our client and server to test they are speaking to each other.
+
+## Step 1: Get OAuth Keys
 Obtain Google authentication key by registering app. 
 https://console.developers.google.com/  
 1. Create Project
 2. Enable Google+ API
 3. Go down to credentials tab and create new credentials
-4. Select Oauth Client Id
-5. Set redirect URI http://localhost:3001/googlecallback
-6. Get keys for env (Google client ID, Secret, and Callback)
+4. Set up OAuth consent screen
+5. Select OAuth Client Id
+6. Set redirect URI http://localhost:3001/googlecallback
+7. Get keys for env (Google client ID, Secret, and Callback)
 
 ## Step 2: Backend Code
 ### Dependencies
@@ -188,3 +200,4 @@ import queryString from "query-string";
     this.setState({ user: null });
   };
 ```
+

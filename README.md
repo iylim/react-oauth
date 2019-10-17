@@ -41,7 +41,7 @@ npm i passport-google-oauth20
 4. Require OAuth strategy.
 * require the ```passport-google-oauth``` inside *passport.js*.
 ```
-const GoogleStrategy = require('passport-goggle-oauth20').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 ```
 5. Configure Passport
 * ```passport.use``` method with GoogleStrategy

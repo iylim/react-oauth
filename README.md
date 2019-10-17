@@ -87,9 +87,7 @@ passport.serializeUser((user, done) => {
 
 ```
 passport.deserializeUser((obj, done) => {
-  User.findById(id, function(err, user) {
-     done(err, user);
-   });
+  done(null, obj);
 });
 ```
 ### Routing

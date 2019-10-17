@@ -73,6 +73,27 @@ passport.use(
   ),
 );
 ```
+* lets break down what's happening here in this code. We are telling passport to use the GoogleStrategy the callback verifies to complete authentication.
+```
+(accessToken, refreshToken, profile, done) => {
+  User.findOne({ googleId: profile.id }, (err, user) => {
+    if (err) return done(err);
+    if (user) {
+      return done(null, user);
+    }
+```
+* With the user data from Google, we are creating a new user in our database
+```
+const newUser = new User({
+  fullName: profile.displayName,
+  email: profile.emails[0].value,
+});
+newUser.save()
+  .then(() => done(null, newUser))
+  .catch((error) => {
+    done(error);
+});
+```
 6. Serialize User  
 * First up is the ```passport.serializeUser``` method that's used to give Passport the nugget of data to put into the session for this authenticated user.
 * Put code below after ```passport.use```.
@@ -91,9 +112,10 @@ passport.deserializeUser((obj, done) => {
 });
 ```
 ### Routing
+* Add the CLIENT_ORIGIN to your *.env* file (http://localhost:3000) as well as SECRET which can be anything you want it to be.
 1. Login Route
 * The ```passport.authenticate``` function will coordinate with Google's OAuth server.
-* Add code below to *server.js*.
+* Add code below to *routes/Oauth.routes.js*.
 ``` 
 app.use('/auth/google', passport.authenticate(
   'google',
@@ -108,7 +130,7 @@ app.use('/auth/google', passport.authenticate(
    'google', { failureRedirect: '/', session: false }),
   (req, res) => {
     const token = createJWT(req.user);
-    res.redirect(`http://localhost:3000?token=${token}`);
+    res.redirect(`${CLIENT_ORIGIN}?token=${token}`);
   },
   );
  ));
@@ -124,8 +146,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
-import { Route, Switch } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
+
 ReactDOM.render(
  <BrowserRouter>
   <Switch>

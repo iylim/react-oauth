@@ -97,9 +97,9 @@ passport.deserializeUser((obj, done) => {
 * The ```passport.authenticate``` function will coordinate with Google's OAuth server.
 * Add code below to *server.js*.
 ``` 
-router.get('/auth/google', passport.authenticate(
-   'google',
-   { scope: ['profile', 'email'] }
+app.use('/auth/google', passport.authenticate(
+  'google',
+  { scope: ['profile', 'email'] }
 ));
  ```
 2. Callback Route

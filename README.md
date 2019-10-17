@@ -15,6 +15,7 @@ https://console.developers.google.com/
 * Passport: authentication framework for express
 * Cors
 * Session
+* In your terminal run ```npm install``` to bring in these dependencies we will be adding some during this tutorial
 
 ### Setting Up Passport
 1. Mount passport by adding the code below to  *server.js*.  
@@ -166,7 +167,7 @@ npm i query-string --save
 ```
 import queryString from "query-string";
 ```
-* Then before render.
+* Then before render add the code below.
 ```
  componentWillMount() {
     const { location, history } = this.props;
@@ -177,8 +178,10 @@ import queryString from "query-string";
     }
   }
 ```
+* This gets our token from the query and saves to to localStorage
+
 3. Logout
-* To logout a user we remove token.
+* To logout a user we remove token from localStorage.
 ```
  handleLogout = () => {
     localStorage.removeItem('token');
